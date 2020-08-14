@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">CicloBike</string>
+    <string name="volver">Volver a original</string>
+    <string name="invertir">Invertir</string>
+    <string name="filtrar">Filtrar</string>
+    <string-array name="comunas">
+        <item>Mostrar Todo</item>
+        <item>Las Condes</item>
+        <item>La Reina</item>
+        <item>Ñuñoa</item>
+        <item>Macul</item>
+        <item>Providencia</item>
+        <item>Las Condes</item>
+        <item>La Reina</item>
+        <item>Ñuñoa</item>
+        <item>Macul</item>
+        <item>Providencia</item>
+    </string-array>
+</resources>
