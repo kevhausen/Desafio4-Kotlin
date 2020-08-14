@@ -1,9 +1,12 @@
 package cl.desafiolatam
 
 import ListaAdapter
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import android.widget.SpinnerAdapter
 import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,8 +27,23 @@ class MainActivity : AppCompatActivity() {
         listaAdapter.setupData(lista!!)
         Log.d("spinner",spinner_bike.selectedItem.toString())
 
+        spinner_bike.onItemSelectedListener= object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                //recycler_ciclovias.adapter = ListaAdapter(lista,baseContext)
+            }
 
-        button_filtrar.setOnClickListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                /*if(spinner_bike.selectedItem.equals("Mostrar Todo")){
+                    recycler_ciclovias.adapter = ListaAdapter(lista,baseContext)
+                }*/
+                recycler_ciclovias.adapter = ListaAdapter(lista!!.filter { n->n.comuna.equals(spinner_bike.selectedItem) } as MutableList<Ciclovia>,baseContext)
+                when(spinner_bike.selectedItem){"Mostrar Todo"->recycler_ciclovias.adapter = ListaAdapter(lista!!,baseContext)}
+            }
+
+        }
+
+
+        /*button_filtrar.setOnClickListener {
             when(spinner_bike.selectedItem){
                 "Mostrar Todo" -> recycler_ciclovias.adapter = ListaAdapter(lista,this)
                 else ->recycler_ciclovias.adapter = ListaAdapter(lista!!.filter { n->n.comuna.equals(spinner_bike.selectedItem) } as MutableList<Ciclovia>,this)
@@ -33,15 +51,18 @@ class MainActivity : AppCompatActivity() {
             }
 
             //recycler_ciclovias.adapter = ListaAdapter(lista!!.filter { n->n.comuna.equals("Las Condes") } as MutableList<Ciclovia>,this)
-        }
+        }*/
         button_invertir.setOnClickListener {
-            when(button_invertir.text){
-                resources.getString(R.string.invertir)->
-                    recycler_ciclovias.adapter = ListaAdapter(lista!!.filter { n->n.comuna.equals(spinner_bike.selectedItem) }.reversed() as MutableList<Ciclovia>,this)
-                        .also { button_invertir.text=resources.getString(R.string.volver) }
-                resources.getString(R.string.volver)->
-                    recycler_ciclovias.adapter = ListaAdapter(lista!!.filter { n->n.comuna.equals(spinner_bike.selectedItem) } as MutableList<Ciclovia>,this)
-                        .also { button_invertir.text=resources.getString(R.string.invertir) }
+            when(spinner_bike.selectedItem){
+                "Mostrar Todo" -> recycler_ciclovias.adapter = ListaAdapter(lista!!.reversed() as MutableList<Ciclovia>,this)
+                else -> when(button_invertir.text){
+                    resources.getString(R.string.invertir)->
+                        recycler_ciclovias.adapter = ListaAdapter(lista!!.filter { n->n.comuna.equals(spinner_bike.selectedItem) }.reversed() as MutableList<Ciclovia>,this)
+                            .also { button_invertir.text=resources.getString(R.string.volver) }
+                    resources.getString(R.string.volver)->
+                        recycler_ciclovias.adapter = ListaAdapter(lista!!.filter { n->n.comuna.equals(spinner_bike.selectedItem) } as MutableList<Ciclovia>,this)
+                            .also { button_invertir.text=resources.getString(R.string.invertir) }
+                }
             }
 
              }
